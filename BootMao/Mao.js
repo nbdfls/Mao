@@ -44,10 +44,11 @@ $(function ($) {
     })
 
     $('.submit').click(function (e) {
-        console.log(e);
-        var index = $(e.currentTarget).index('button');
+        console.log('submit');
+        var index = $(e.currentTarget).index('button')-3;
         console.log("index is "+index);
         var obj={
+            failed: false,
             id:index+1,
             question : jsonData[index+1].name,
             answerA : jsonData[index+1].content[0],
@@ -55,13 +56,23 @@ $(function ($) {
             answerC : jsonData[index+1].content[2],
         }
 
-        var answer = jsonData[index+1].ans;
+        var answer = jsonData[index].ans;
        var choose = $(".active").find(".optionsRadios:checked").val();
+       console.log(choose+","+answer);
        if(choose===answer){
-           var slideOut = List[index],
-               slideIn = List[index+1],
+           var slideOut = List[index+3],
+               slideIn = List[index+4],
                slideInAll = $(List[2]);
            goToNextSlide(obj,slideOut, slideIn, slideInAll);
+
+       }else{
+           obj.id = index+4;
+          var  slideIn = List[28],
+                slideOut = List[index+3];
+            var   slideInAll = $(List[2]);
+
+           obj.failed = true;
+           failedSlide(obj,slideOut, slideIn);
 
        }
 
@@ -75,6 +86,19 @@ $(function ($) {
 
 
     });
+    $(".failbtn").click(function () {
+        console.log('fail');
+
+        var returnIndex = $("#index").html();
+        var obj={
+            id:returnIndex
+        }
+        var slideIn = List[returnIndex],
+            slideOut = $(".slide:last");
+        returnSlide(obj,slideOut,slideIn);
+
+    })
+
 
 
 })
@@ -135,7 +159,7 @@ function goToNextSlide(obj,slideOut, slideIn, slideInAll) {
             .to(slideOutContent, 0.65, {y: "+=100px", ease: Power3.easeInOut}, 0)
             .to(slideOut, 0.65, {backgroundPosition :'bottom', ease: Power3.easeInOut}, 0)
             .set(slideOut, {autoAlpha: 0})
-             .to(slideIn, 1, {y: "-="+obj.id+"00%", ease: Power3.easeInOut}, 0)
+             .to(slideIn, 1, {y: "-="+(obj.id+3)+"00%", ease: Power3.easeInOut}, 0)
             // .fromTo(slideInContent, 0.65, {y: '-=0px'}, {y : "-=200%", ease: Power3.easeInOut}, "-=0.5")
             // .fromTo(slideInImg, 0.65, {y: '-=0px'}, {y : "-=200%", ease: Power3.easeInOut}, '-=0.5')
     }
@@ -148,6 +172,58 @@ function goToNextSlide(obj,slideOut, slideIn, slideInAll) {
     }
 };
 
+function failedSlide(obj,slideOut,slideIn){
+    var t1 = new TimelineLite(),
+        slideOutContent = $(slideOut).find('.card-content'),
+        slideInContent = $(slideIn).find('.card-content'),
+        slideOutImg = $(slideOut).find('.card-img'),
+        slideInImg = $(slideIn).find('.card-img'),
+        index = $(slideIn).index(),
+        size = $homeSlide.length;
+
+    console.log(index);
+
+    $('#index').html(obj.id-1);
+    $('#index').css('display','none');
+    if(slideIn !== null) {
+        t1
+            .set(slideIn, {autoAlpha: 1, className: '+=active',display:'block'})
+            .set(slideOut, {className: '-=active',visibility:'hidden'})
+            .to(slideOutContent, 0.65, { ease: Power3.easeInOut}, 0)
+            .to(slideOut, 0.65, {backgroundPosition :'bottom', ease: Power3.easeInOut}, 0)
+            .set(slideOut, {autoAlpha: 0})
+            .to(slideIn, 1, {y: "-"+obj.id+"00%", ease: Power3.easeInOut}, 0)
+        // .fromTo(slideInContent, 0.65, {y: '-=0px'}, {y : "-=200%", ease: Power3.easeInOut}, "-=0.5")
+        // .fromTo(slideInImg, 0.65, {y: '-=0px'}, {y : "-=200%", ease: Power3.easeInOut}, '-=0.5')
+    }
+
+
+}
+
+function returnSlide(obj,slideOut,slideIn){
+    var t1 = new TimelineLite(),
+        slideOutContent = $(slideOut).find('.card-content'),
+        slideInContent = $(slideIn).find('.card-content'),
+        slideOutImg = $(slideOut).find('.card-img'),
+        slideInImg = $(slideIn).find('.card-img'),
+        index = $(slideIn).index(),
+        size = $homeSlide.length;
+//var returnIndex = ("#index").html();
+    console.log(obj);
+
+    if(slideIn !== undefined) {
+        t1
+            .set(slideIn, {autoAlpha: 1, className: '+=active',display:'block'})
+            .set(slideOut, {className: '-=active',visibility:'hidden'})
+            .to(slideOutContent, 0.65, { ease: Power3.easeInOut}, 0)
+            .to(slideOut, 0.65, {backgroundPosition :'bottom', ease: Power3.easeInOut}, 0)
+            .set(slideOut, {autoAlpha: 0})
+            .to(slideIn, 1, { ease: Power3.easeInOut}, 0)
+        // .fromTo(slideInContent, 0.65, {y: '-=0px'}, {y : "-=200%", ease: Power3.easeInOut}, "-=0.5")
+        // .fromTo(slideInImg, 0.65, {y: '-=0px'}, {y : "-=200%", ease: Power3.easeInOut}, '-=0.5')
+    }
+
+}
 $slideNavNext.click(function(e) {
     e.preventDefault();
 
