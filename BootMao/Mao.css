@@ -1,6 +1,36 @@
 body{
     position: fixed;
 }
+.f1{
+    background-color:#FFD6BB;
+    position:absolute;
+    left:800px;
+    top:600px;
+    height:25px;
+    width:60px;
+    display:inline-block;
+
+}
+#f2{
+    background-color:#FFD6BB;
+    position:absolute;
+    left:800px;
+    top:600px;
+    height:25px;
+    width:60px;
+    display:inline-block;
+
+}
+#f3{
+    background-color:#FFD6BB;
+    position:absolute;
+    left:800px;
+    top:600px;
+    height:25px;
+    width:60px;
+    display:inline-block;
+
+}
 .slide{
     display: flex;
     justify-content: center;

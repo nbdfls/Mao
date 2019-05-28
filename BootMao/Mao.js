@@ -35,7 +35,13 @@ $(function ($) {
     });
 
     init();
-
+    $('.f1').click(function (e) {
+        var index = $(e.currentTarget).index('button');
+        var slideOut = List[index],
+            slideIn = List[index+1],
+            slideInAll = $(List[2]);
+        moveSlide(slideOut, slideIn, slideInAll);
+    })
 
     $('.submit').click(function (e) {
         console.log(e);
@@ -72,6 +78,32 @@ $(function ($) {
 
 
 })
+function moveSlide(slideOut, slideIn, slideInAll) {
+    var t1 = new TimelineLite(),
+        index = $(slideIn).index(),
+        size = $homeSlide.length;
+    console.log(index);
+
+    if(slideIn !== undefined) {
+        t1
+            .set(slideIn, {autoAlpha: 1, className: '+=active',display:'block'})
+            .set(slideOut, {className: '-=active',visibility:'hidden'})
+            //.to(slideOutContent, 0.65, {y: "-=40px", ease: Power3.easeInOut}, 0)
+            //.to(slideOutImg, 0.65, {backgroundPosition :'top', ease: Power3.easeInOut}, 0)
+            .to(slideOut, 0.65, {backgroundPosition :'bottom', ease: Power3.easeInOut}, 0)
+            .set(slideOut, {autoAlpha: 0})
+            .to(slideIn, 1, {y: "-="+(index)+"00%", ease: Power3.easeInOut}, 0)
+        //.fromTo(slideInContent, 0.65, {y: '+=40px'}, {y : 0, ease: Power3.easeInOut}, "-=0.7")
+        //.fromTo(slideInImg, 0.65, {backgroundPosition: 'bottom'}, {backgroundPosition: 'top', ease: Power3.easeInOut}, '-=0.7')
+    }
+
+    TweenMax.set($slideNavPrev, {autoAlpha: 1});
+    TweenMax.set($homeSlide.not($activeSlide), {autoAlpha: 0});
+
+    if(index === size - 1){
+        TweenMax.to($slideNavNext, 0.3, {autoAlpha: 0.2, ease:Linear.easeNone});
+    }
+};
 
 function goToNextSlide(obj,slideOut, slideIn, slideInAll) {
 
