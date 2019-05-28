@@ -1,4 +1,6 @@
-
+body{
+    position: fixed;
+}
 .slide{
     display: flex;
     justify-content: center;
