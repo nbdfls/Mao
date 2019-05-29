@@ -48,15 +48,16 @@ $(function ($) {
         var index = $(e.currentTarget).index('button')-3;
 
         console.log("index is "+index);
-        var obj={
-            failed: false,
-            id:index+1,
-            question : jsonData[index+1].name,
-            answerA : jsonData[index+1].content[0],
-            answerB : jsonData[index+1].content[1],
-            answerC : jsonData[index+1].content[2],
+        if(index<24) {
+            var obj = {
+                failed: false,
+                id: index + 1,
+                question: jsonData[index + 1].name,
+                answerA: jsonData[index + 1].content[0],
+                answerB: jsonData[index + 1].content[1],
+                answerC: jsonData[index + 1].content[2],
+            }
         }
-
         var answer = jsonData[index].ans;
         var choose = $(".active").find(".optionsRadios:checked").val();
         if(choose===answer){
