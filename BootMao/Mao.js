@@ -17,7 +17,7 @@ $(function ($) {
 
     List= $(".slide");
 
-    $.getJSON("static/json1(1).json",function (json) {
+    $.getJSON("static/json1.json",function (json) {
         jsonData = json;
 
         var id = jsonData[0].id;
@@ -46,6 +46,7 @@ $(function ($) {
     $('.submit').click(function (e) {
         console.log('submit');
         var index = $(e.currentTarget).index('button')-3;
+
         console.log("index is "+index);
         var obj={
             failed: false,
@@ -57,44 +58,37 @@ $(function ($) {
         }
 
         var answer = jsonData[index].ans;
-       var choose = $(".active").find(".optionsRadios:checked").val();
-       console.log(choose+","+answer);
-       if(choose===answer){
-           var slideOut = List[index+3],
-               slideIn = List[index+4],
-               slideInAll = $(List[2]);
-           goToNextSlide(obj,slideOut, slideIn, slideInAll);
-
-       }else{
+        var choose = $(".active").find(".optionsRadios:checked").val();
+        if(choose===answer){
+            if(index===24){
+                //跳转到成功页面
+                location.href="succeed.html";
+            }else {
+                var slideOut = List[index + 3],
+                    slideIn = List[index + 4],
+                    slideInAll = $(List[2]);
+                goToNextSlide(obj, slideOut, slideIn, slideInAll);
+            }
+        }else{
            obj.id = index+4;
-          var  slideIn = List[28],
+           var  slideIn = List[28],
                 slideOut = List[index+3];
-            var   slideInAll = $(List[2]);
-
            obj.failed = true;
            failedSlide(obj,slideOut, slideIn);
-
        }
 
 
-
-          //  slideIn = $(".container").eq(3),
-
-        console.log($(slideIn).index());
-        console.log($(slideOut).index());
-
-
-
     });
-    $(".failbtn").click(function () {
+    $(".failbtn").click(function (e) {
         console.log('fail');
-
+        var index = $(e.currentTarget).index('button');
         var returnIndex = $("#index").html();
         var obj={
             id:returnIndex
         }
         var slideIn = List[returnIndex],
-            slideOut = $(".slide:last");
+            slideOut = List[index];
+        console.log("我要回"+returnIndex);
         returnSlide(obj,slideOut,slideIn);
 
     })
@@ -112,8 +106,6 @@ function moveSlide(slideOut, slideIn, slideInAll) {
         t1
             .set(slideIn, {autoAlpha: 1, className: '+=active',display:'block'})
             .set(slideOut, {className: '-=active',visibility:'hidden'})
-            //.to(slideOutContent, 0.65, {y: "-=40px", ease: Power3.easeInOut}, 0)
-            //.to(slideOutImg, 0.65, {backgroundPosition :'top', ease: Power3.easeInOut}, 0)
             .to(slideOut, 0.65, {backgroundPosition :'bottom', ease: Power3.easeInOut}, 0)
             .set(slideOut, {autoAlpha: 0})
             .to(slideIn, 1, {y: "-="+(index)+"00%", ease: Power3.easeInOut}, 0)
@@ -175,14 +167,9 @@ function goToNextSlide(obj,slideOut, slideIn, slideInAll) {
 function failedSlide(obj,slideOut,slideIn){
     var t1 = new TimelineLite(),
         slideOutContent = $(slideOut).find('.card-content'),
-        slideInContent = $(slideIn).find('.card-content'),
-        slideOutImg = $(slideOut).find('.card-img'),
-        slideInImg = $(slideIn).find('.card-img'),
         index = $(slideIn).index(),
         size = $homeSlide.length;
-
     console.log(index);
-
     $('#index').html(obj.id-1);
     $('#index').css('display','none');
     if(slideIn !== null) {
@@ -196,6 +183,8 @@ function failedSlide(obj,slideOut,slideIn){
         // .fromTo(slideInContent, 0.65, {y: '-=0px'}, {y : "-=200%", ease: Power3.easeInOut}, "-=0.5")
         // .fromTo(slideInImg, 0.65, {y: '-=0px'}, {y : "-=200%", ease: Power3.easeInOut}, '-=0.5')
     }
+
+
 
 
 }
@@ -224,18 +213,7 @@ function returnSlide(obj,slideOut,slideIn){
     }
 
 }
-$slideNavNext.click(function(e) {
-    e.preventDefault();
 
-
-
-    var slideOut = $('.slide.active'),
-        slideIn = $('.slide.active').next('.slide'),
-        slideInAll = $('.slide');
-
-    goToNextSlide(slideOut, slideIn, slideInAll);
-
-});
 
 function goToPrevSlide(slideOut, slideIn, slideInAll) {
     var t1 = new TimelineLite(),
@@ -264,13 +242,4 @@ function goToPrevSlide(slideOut, slideIn, slideInAll) {
     }
 };
 
-$slideNavPrev.click(function(e) {
-    e.preventDefault();
 
-    var slideOut = $('.slide.active'),
-        slideIn = $('.slide.active').prev('.slide'),
-        slideInAll = $('.slide');
-
-    goToPrevSlide(slideOut, slideIn, slideInAll);
-
-});

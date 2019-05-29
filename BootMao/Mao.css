@@ -1,6 +1,15 @@
 body{
     position: fixed;
 }
+.failbtn{
+    background-color:#FFD6BB;
+    position:absolute;
+    left:800px;
+    top:600px;
+    height:25px;
+    width:60px;
+    display:inline-block;
+}
 .f1{
     background-color:#FFD6BB;
     position:absolute;
@@ -11,26 +20,7 @@ body{
     display:inline-block;
 
 }
-#f2{
-    background-color:#FFD6BB;
-    position:absolute;
-    left:800px;
-    top:600px;
-    height:25px;
-    width:60px;
-    display:inline-block;
 
-}
-#f3{
-    background-color:#FFD6BB;
-    position:absolute;
-    left:800px;
-    top:600px;
-    height:25px;
-    width:60px;
-    display:inline-block;
-
-}
 .slide{
     display: flex;
     justify-content: center;
@@ -45,7 +35,8 @@ body{
     width: 100%;
     height: 80vh;
     display: flex;
-    background: #ffffff;
+    background: url("img/background.png");
+    background-size:cover;
     padding: 3px;
     margin-top: 10vh;
     margin-bottom: 10vh;
@@ -64,7 +55,7 @@ body{
     padding: 10% 5%;
     box-sizing: border-box;
     width: 50%;
-    background: #ffffff;
+
 }
 
 .card-theme{
@@ -168,13 +159,6 @@ body{
     transition: opacity 0.3s ease;
 }
 
-#prev:after{
-    content: "↑";
-}
-
-#next:after{
-    content: "↓";
-}
 .submit{
     float: right;
 }
